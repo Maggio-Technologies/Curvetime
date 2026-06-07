@@ -1,0 +1,76 @@
+# config/node.yaml
+
+node:
+  name: "CurveTimeNode-001"
+  address: "http://localhost:8000"
+  contact: "admin@example.com"
+  data_dir: "./data"
+
+network:
+  host: "0.0.0.0"
+  port: 9000
+  bootstrap_peers:
+    - "/ip4/192.168.1.100/tcp/9000/p2p/Qm..."
+    - "/ip4/192.168.1.101/tcp/9000/p2p/Qm..."
+  max_connections: 100
+  timeout: 30
+
+api:
+  host: "0.0.0.0"
+  port: 8000
+  cors_origins:
+    - "http://localhost:3000"
+    - "https://yourdomain.com"
+  rate_limit:
+    enabled: true
+    requests_per_minute: 60
+
+rpc:
+  host: "0.0.0.0"
+  port: 8545
+  max_batch_size: 50
+
+storage:
+  chain_db_path: "./data/blockchain_db"
+  index_db_path: "./data/index_db"
+  mempool_size: 10000
+  utxo_cache_size: 100000
+
+consensus:
+  auto_mine: true
+  block_time: 10  # 目标出块时间(秒)
+  difficulty_adjustment_interval: 2016
+  dqn:
+    state_size: 128
+    action_size: 4
+    memory_size: 10000
+    batch_size: 64
+    gamma: 0.95
+    epsilon: 1.0
+    epsilon_min: 0.01
+    epsilon_decay: 0.995
+    learning_rate: 0.001
+  reward:
+    block_reward: 12.5
+    ai_contribution_bonus: 0.1
+    training_data_reward: 0.01
+
+smart_contract:
+  enabled: true
+  vm_type: "wasm"  # wasm 或 custom
+  gas_per_byte: 100
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "./logs/curvetime.log"
+  max_bytes: 104857600  # 100MB
+  backup_count: 5
+
+security:
+  jwt_secret_key: "YOUR_SECURE_JWT_SECRET_HERE"
+  jwt_expiration_hours: 24
+  tls:
+    enabled: false
+    cert_file: "./certs/server.crt"
+    key_file: "./certs/server.key"

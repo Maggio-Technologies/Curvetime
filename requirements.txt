@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+websockets
+plyvel
+pyyaml
+cryptography
+torch
+numpy
+aiohttp
+pydantic
+jsonrpcserver

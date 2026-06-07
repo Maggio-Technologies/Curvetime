@@ -1,0 +1,1 @@
+python -m curvetime.node -c config/node.yaml

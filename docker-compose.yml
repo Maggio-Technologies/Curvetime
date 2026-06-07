@@ -1,0 +1,59 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  node1:
+    build: .
+    container_name: curvetime-node1
+    ports:
+      - "8001:8000"   # REST API
+      - "9001:9000"   # P2P
+      - "8545:8545"   # JSON-RPC
+    volumes:
+      - ./data/node1:/app/data
+      - ./logs/node1:/app/logs
+    environment:
+      - NODE_NAME=curvetime-node1
+      - DB_PATH=/app/data/blockchain_db
+    networks:
+      - curvetime-net
+
+  node2:
+    build: .
+    container_name: curvetime-node2
+    ports:
+      - "8002:8000"
+      - "9002:9000"
+      - "8546:8545"
+    volumes:
+      - ./data/node2:/app/data
+      - ./logs/node2:/app/logs
+    environment:
+      - NODE_NAME=curvetime-node2
+      - BOOTSTRAP_PEERS=/ip4/node1/tcp/9000/p2p/Qm...
+    networks:
+      - curvetime-net
+
+  postgres:
+    image: postgres:15
+    container_name: curvetime-pg
+    environment:
+      POSTGRES_USER: curvetime
+      POSTGRES_PASSWORD: secure_password
+      POSTGRES_DB: curvetime_ai
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - curvetime-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: curvetime-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - curvetime-net
+
+networks:
+  curvetime-net:
+    driver: bridge
